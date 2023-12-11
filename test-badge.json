@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "label": "Noor test",
+  "label": "coverage",
   "message": "80%",
-  "color": "orange"
+  "color": "red"
 }
