@@ -23,7 +23,7 @@ jobs:
           
 
   PushJsonFile:
-    needs: CreateBadgeJsonString
+    needs: CreateJsonString
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
