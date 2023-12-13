@@ -56,10 +56,10 @@ jobs:
 
       - name: CommitFiles
         run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
           if [[ "$(git diff-index -p HEAD --)" != "" ]]; then
-            git config --local user.email "actions@github.com"
-            git config --local user.name "GitHub Actions"
-            git add .
             git commit -m "Add badge ${{ inputs.badgeId }}"
             git push origin HEAD:main
           else
