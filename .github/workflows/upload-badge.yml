@@ -5,6 +5,23 @@ on:
     types: [ upload-badge ]
 
   workflow_dispatch:
+    inputs:
+      label:
+        description: 'Label for the badge'
+        required: true
+        default: 'Build'
+      message:
+        description: 'Message for the badge'
+        required: true
+        default: 'Passing'
+      color:
+        description: 'Color for the badge'
+        required: true
+        default: 'green'
+      badgeId:
+        description: 'Id for the badge'
+        required: true
+        default: 'build'
 
 
 
@@ -13,6 +30,7 @@ permissions:
 
 
 jobs:
+
   CreateBadgeJsonString:
     runs-on: ubuntu-latest
     outputs:
