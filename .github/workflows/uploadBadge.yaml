@@ -1,0 +1,64 @@
+name: Upload Badge
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: 'Badge label'
+        required: true
+        type: string
+      message:
+        description: 'Badge message'
+        required: true
+        type: string
+      color:
+        description: 'Badge color'
+        required: true
+        type: string
+      badgeId:
+        description: 'Badge id'
+        required: true
+        type: string
+
+
+permissions:
+  contents: write
+
+
+jobs:
+  CreateBadgeJsonString:
+    runs-on: ubuntu-latest
+    outputs:
+      badgeJsonString: ${{ steps.createBadgeJsonString.outputs.badgeJsonString }}
+    steps:
+      - name: Create badge json string
+        id: createBadgeJsonString
+        run: |
+          echo "::set-output name=badgeJsonString::{\"label\": \"${{ github.event.inputs.label }}\", \"message\": \"${{ github.event.inputs.message }}\", \"color\": \"${{ github.event.inputs.color }}\"}"
+
+  PushJsonFile:
+    needs: CreateBadgeJsonString
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3
+        with:
+          fetch-depth: 0
+
+      - name: CreateJsonFile
+        id: createJsonFile
+        run: |
+          badgeFileName = "${{ inputs.badgeId }}.json"
+          echo "${{ needs.CreateBadgeJsonString.outputs.badgeJsonString }}" > $badgeFileName
+
+      - name: CommitFiles
+        run: |
+          git add $badgeFileName
+          git commit -m "Add badge $badgeFileName"
+          git push origin HEAD:main
+          
+    
+
+
+
+          
