@@ -56,7 +56,6 @@ jobs:
 
       - name: CommitFiles
         run: |
-          git diff-index -p HEAD --
           if [[ "$(git diff-index -p HEAD --)" != "" ]]; then
             git config --local user.email "actions@github.com"
             git config --local user.name "GitHub Actions"
