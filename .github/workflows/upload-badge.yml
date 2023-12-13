@@ -1,24 +1,8 @@
 name: Upload Badge
 
 on:
-  workflow_dispatch:
-    inputs:
-      label:
-        description: 'Badge label'
-        required: true
-        type: string
-      message:
-        description: 'Badge message'
-        required: true
-        type: string
-      color:
-        description: 'Badge color'
-        required: true
-        type: string
-      badgeId:
-        description: 'Badge id'
-        required: true
-        type: string
+  repository_dispatch:
+    types: [ upload-badge ]
 
 
 permissions:
@@ -34,7 +18,7 @@ jobs:
       - name: Create badge json string
         id: createBadgeJsonString
         run: |
-          jsonString="{\"label\": \"${{ github.event.inputs.label }}\", \"message\": \"${{ github.event.inputs.message }}\", \"color\": \"${{ github.event.inputs.color }}\"}"
+          jsonString="{\"label\": \"${{ github.event.client_payload.label }}\", \"message\": \"${{ github.event.client_payload.message }}\", \"color\": \"${{ github.event.client_payload.color }}\"}"
           echo $jsonString
           echo "badgeJsonString=$jsonString" >> $GITHUB_OUTPUT
 
@@ -50,7 +34,7 @@ jobs:
       - name: CreateJsonFile
         id: createJsonFile
         run: |
-          badgeFileName="${{ inputs.badgeId }}.json"
+          badgeFileName="${{  github.event.client_payload.badgeId  }}.json"
           echo '${{ needs.CreateBadgeJsonString.outputs.badgeJsonString }}' > "$badgeFileName"
           cat "$badgeFileName"
 
@@ -60,7 +44,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add .
           if [[ "$(git diff-index -p HEAD --)" != "" ]]; then
-            git commit -m "Add badge ${{ inputs.badgeId }}"
+            git commit -m "Add badge ${{ github.event.client_payload.badgeId }}"
             git push origin HEAD:main
           else
             echo "Badges unchanged. Skipping."
