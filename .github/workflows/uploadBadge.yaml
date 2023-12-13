@@ -52,6 +52,7 @@ jobs:
         run: |
           badgeFileName="${{ inputs.badgeId }}.json"
           echo "${{ needs.CreateBadgeJsonString.outputs.badgeJsonString }}" > "$badgeFileName"
+          cat "$badgeFileName"
 
       - name: CommitFiles
         run: |
