@@ -53,7 +53,7 @@ jobs:
 
       - name: CommitFiles
         run: |
-          git add $badgeFileName
+          git add .
           git commit -m "Add badge $badgeFileName"
           git push origin HEAD:main
           
