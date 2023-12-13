@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [ upload-badge ]
 
+  workflow_dispatch:
+
+
 
 permissions:
   contents: write
